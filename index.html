@@ -164,32 +164,39 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-C++封装篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-C++多态篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/">C++封装篇</a>
+      <a class="article-title" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/">C++多态篇</a>
     </h1>
   
 
         
-        <a href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/" class="archive-article-date">
+        <a href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/" class="archive-article-date">
   	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
 </a>
         
       </header>
       <div align="center" class="post-count">
-    字数：3.1k字 | 预计阅读时长：15分钟
+    字数：1.8k字 | 预计阅读时长：7分钟
 </div>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-类外定义"><a href="#1-类外定义" class="headerlink" title="1.类外定义"></a>1.类外定义</h2><h3 id="同文件类外定义"><a href="#同文件类外定义" class="headerlink" title="同文件类外定义"></a><strong>同文件类外定义</strong></h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Car.cpp</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">changespeed</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::run</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::stop</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::changespeed</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="1-虚函数"><a href="#1-虚函数" class="headerlink" title="1.虚函数"></a>1.虚函数</h2><p><strong>多态</strong>：指相同对象收到不同消息或不同对象收到相同消息时产生不同的动作。（即<strong>静态多态</strong>和<strong>动态多态</strong>）</p>
+<p>静态多态也称为早绑定，对于一个矩形类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rect</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">calcArea</span><span class="params">(<span class="keyword">int</span> <span class="built_in">width</span>)</span></span>;<span class="comment">//A</span></span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">calcArea</span><span class="params">(<span class="keyword">int</span> <span class="built_in">height</span>,<span class="keyword">int</span> weight)</span></span>;<span class="comment">//B，两个函数互为重载</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对于Rect对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Rect <span class="built_in">rect</span>;</span><br><span class="line"><span class="built_in">rect</span>.calcArea(<span class="number">3</span>);<span class="comment">//调用的是A</span></span><br><span class="line"><span class="built_in">rect</span>.calcArea(<span class="number">3</span>,<span class="number">4</span>);<span class="comment">//调用的是B</span></span><br></pre></td></tr></table></figure>
+
+<p>程序在运行之前编译阶段就已经自动确定了对象应该使用哪个函数，很早就已经将函数编译，这种情况称为早绑定，也就是静态多态。</p>
         
-          <a class="article-more-a" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/#more">more >></a>
+          <a class="article-more-a" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/#more">more >></a>
         
       
 
@@ -213,7 +220,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/">展开全文 >></a>
         </p>
       
 
@@ -333,6 +340,85 @@
 
 
   
+    <article id="post-C++封装篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/">C++封装篇</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
+</a>
+        
+      </header>
+      <div align="center" class="post-count">
+    字数：3.1k字 | 预计阅读时长：15分钟
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-类外定义"><a href="#1-类外定义" class="headerlink" title="1.类外定义"></a>1.类外定义</h2><h3 id="同文件类外定义"><a href="#同文件类外定义" class="headerlink" title="同文件类外定义"></a><strong>同文件类外定义</strong></h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Car.cpp</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">changespeed</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::run</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::stop</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Car::changespeed</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/29/C++%E5%B0%81%E8%A3%85%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-C++模板篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -392,92 +478,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-C++多态篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/">C++多态篇</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
-</a>
-        
-      </header>
-      <div align="center" class="post-count">
-    字数：1.8k字 | 预计阅读时长：7分钟
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-虚函数"><a href="#1-虚函数" class="headerlink" title="1.虚函数"></a>1.虚函数</h2><p><strong>多态</strong>：指相同对象收到不同消息或不同对象收到相同消息时产生不同的动作。（即<strong>静态多态</strong>和<strong>动态多态</strong>）</p>
-<p>静态多态也称为早绑定，对于一个矩形类：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rect</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">calcArea</span><span class="params">(<span class="keyword">int</span> <span class="built_in">width</span>)</span></span>;<span class="comment">//A</span></span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">calcArea</span><span class="params">(<span class="keyword">int</span> <span class="built_in">height</span>,<span class="keyword">int</span> weight)</span></span>;<span class="comment">//B，两个函数互为重载</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>对于Rect对象：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Rect <span class="built_in">rect</span>;</span><br><span class="line"><span class="built_in">rect</span>.calcArea(<span class="number">3</span>);<span class="comment">//调用的是A</span></span><br><span class="line"><span class="built_in">rect</span>.calcArea(<span class="number">3</span>,<span class="number">4</span>);<span class="comment">//调用的是B</span></span><br></pre></td></tr></table></figure>
-
-<p>程序在运行之前编译阶段就已经自动确定了对象应该使用哪个函数，很早就已经将函数编译，这种情况称为早绑定，也就是静态多态。</p>
-        
-          <a class="article-more-a" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/29/C++%E5%A4%9A%E6%80%81%E7%AF%87/">展开全文 >></a>
         </p>
       
 
