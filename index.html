@@ -64,10 +64,10 @@
 			</ul>
 		</nav>
     <nav>
-       总文章数 8
+       总文章数 7
 </nav>
 <nav>
-	总字数 <span class="post-count">12.3k</span>
+	总字数 <span class="post-count">11.8k</span>
 </nav>
 		<nav class="header-smart-menu">
     		
@@ -163,209 +163,6 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  
-    <article id="post-OS实验一：在linux内核中新增系统调用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/29/OS%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8linux%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">OS实验一：在linux内核中新增系统调用</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/29/OS%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8linux%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
-</a>
-        
-      </header>
-      <div align="center" class="post-count">
-    字数：578字 | 预计阅读时长：2分钟
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p>熟悉Linux系统调用，深入了解Linux操作系统中系统调用的实现机制和执行过程。</p>
-<h2 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h2><ol>
-<li><p>阅读并分析Linux内核源码，深入了解Linux内核中系统调用内部数据结构；</p>
-</li>
-<li><p>编写一个新系统调用的响应函数，函数的名称和功能由实验者自行定义；</p>
-</li>
-<li><p>将新的系统调用函数嵌入到Linux内核中；</p>
-</li>
-<li><p>编写应用程序以测试新的系统调用并输出测试结果。</p>
-</li>
-</ol>
-<h2 id="设计思路与流程图"><a href="#设计思路与流程图" class="headerlink" title="设计思路与流程图"></a>设计思路与流程图</h2><h3 id="解压内核"><a href="#解压内核" class="headerlink" title="解压内核"></a>解压内核</h3><p>打开虚拟机和Fedora 7操作系统，发现桌面上已有linux-2.6.21的压缩文件，进行解压。</p>
-<p>进入桌面终端，执行命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Desktop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar zxvf linux-2.6.21.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> linux-2.6.21</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/os1.png" alt=""></p>
-<p>这是解压后的内核。</p>
-<h3 id="新增系统调用"><a href="#新增系统调用" class="headerlink" title="新增系统调用"></a>新增系统调用</h3><h4 id="1-定义实现函数"><a href="#1-定义实现函数" class="headerlink" title="1.定义实现函数"></a>1.定义实现函数</h4><p>进入<strong>\linux-2.6.21\kernel\sys.c</strong>，在文件末尾新增一个系统调用函数：</p>
-<p><img src="C:%5CUsers%5C76171%5Cblog%5Csource%5Cimages%5Cos2.png" alt=""></p>
-<p>（这是我的系统调用函数，无参数，返回值是100）</p>
-<h3 id="2-在系统调用表中增添系统调用号"><a href="#2-在系统调用表中增添系统调用号" class="headerlink" title="2.在系统调用表中增添系统调用号"></a>2.在系统调用表中增添系统调用号</h3><p>打开终端，切换到root权限，cd到内核目录，使用vi编辑<strong>arch/i386/kernel/syscall_table.S</strong>，在尾部加上自己的系统调用号。</p>
-<p><img src="C:%5CUsers%5C76171%5Cblog%5Csource%5Cimages%5Cos3.jpg" alt=""></p>
-<p>（可以看到原本一共319个系统调用号，我们在最后新增了一个自己的系统调用）</p>
-<h3 id="3-新增系统调用宏定义"><a href="#3-新增系统调用宏定义" class="headerlink" title="3.新增系统调用宏定义"></a>3.新增系统调用宏定义</h3><p>打开终端，切换到root权限，在include/asm-i386/unistd.h里加上系统调用号的宏定义：</p>
-<p><img src="C:%5CUsers%5C76171%5Cblog%5Csource%5Cimages%5Cos4.png" alt=""></p>
-<p>（注意要把最后的NR_syscalls表示系统调用数量的宏定义值改为321）</p>
-<h2 id="重新编译内核"><a href="#重新编译内核" class="headerlink" title="重新编译内核"></a>重新编译内核</h2><p>将当前正在运行的内核对应的配置文件作为模板来生成.config文件，即将/boot目录下的已有的config文件复制到linux-2.6.21目录下。</p>
-<p>生成内核配置文件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make mrproper</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp /boot/config-`uname –r` ./config</span></span><br></pre></td></tr></table></figure>
-
-<p>第一个命令make mrproper用来保证内核树是干净的，如果内核第一次编译则可以省略。其中的uname –r命令可查看当前环境下的内核版本号。</p>
-<p>更新config文件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make oldconfig</span></span><br></pre></td></tr></table></figure>
-
-<p>部分新配置项会提示用户选择，都选N或者缺省即可，完成后即可生成.config文件。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Fedora 7</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/29/OS%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8linux%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-C++模板篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/">C++模板篇</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
-</a>
-        
-      </header>
-      <div align="center" class="post-count">
-    字数：2.9k字 | 预计阅读时长：12分钟
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-友元函数"><a href="#1-友元函数" class="headerlink" title="1.友元函数"></a>1.友元函数</h2><p>关键字：friend</p>
-<p>友元函数分为全局友元函数与友元成员函数。</p>
-<p><strong>全局友元函数</strong>的使用：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">printXY</span><span class="params">(Coordinate &amp;c)</span><span class="comment">//声明友元函数，参数一定要传入类对象或者地址或者指针</span></span></span><br><span class="line"><span class="function">	<span class="keyword">public</span>:</span></span><br><span class="line"><span class="function">		<span class="title">Coordinate</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		<span class="keyword">int</span> m_iX;</span><br><span class="line">		<span class="keyword">int</span> m_iY;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printXY</span><span class="params">(Coordinate &amp;c)</span><span class="comment">//建议传入对象地址或者指针，相较于传入对象效率更高</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;c.m_iX&lt;&lt;c.m_iY;<span class="comment">//直接访问私有数据成员</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">Coordinate <span class="title">coor</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">	printXY(coor);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>友元函数的声明使得一个在类外部的函数可以直接访问对象的私有数据成员。</p>
-        
-          <a class="article-more-a" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
     <article id="post-OS实验一：编译linux内核并新增系统调用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -472,6 +269,94 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/29/OS%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E7%BC%96%E8%AF%91linux%E5%86%85%E6%A0%B8%E5%B9%B6%E6%96%B0%E5%A2%9E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-C++模板篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/">C++模板篇</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-29</time>
+</a>
+        
+      </header>
+      <div align="center" class="post-count">
+    字数：2.9k字 | 预计阅读时长：12分钟
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-友元函数"><a href="#1-友元函数" class="headerlink" title="1.友元函数"></a>1.友元函数</h2><p>关键字：friend</p>
+<p>友元函数分为全局友元函数与友元成员函数。</p>
+<p><strong>全局友元函数</strong>的使用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">printXY</span><span class="params">(Coordinate &amp;c)</span><span class="comment">//声明友元函数，参数一定要传入类对象或者地址或者指针</span></span></span><br><span class="line"><span class="function">	<span class="keyword">public</span>:</span></span><br><span class="line"><span class="function">		<span class="title">Coordinate</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		<span class="keyword">int</span> m_iX;</span><br><span class="line">		<span class="keyword">int</span> m_iY;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printXY</span><span class="params">(Coordinate &amp;c)</span><span class="comment">//建议传入对象地址或者指针，相较于传入对象效率更高</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;c.m_iX&lt;&lt;c.m_iY;<span class="comment">//直接访问私有数据成员</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">Coordinate <span class="title">coor</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">	printXY(coor);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>友元函数的声明使得一个在类外部的函数可以直接访问对象的私有数据成员。</p>
+        
+          <a class="article-more-a" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/29/C++%E6%A8%A1%E6%9D%BF%E7%AF%87/">展开全文 >></a>
         </p>
       
 
