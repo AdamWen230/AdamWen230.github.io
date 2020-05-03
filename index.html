@@ -64,10 +64,10 @@
 			</ul>
 		</nav>
     <nav>
-       总文章数 8
+       总文章数 9
 </nav>
 <nav>
-	总字数 <span class="post-count">16.5k</span>
+	总字数 <span class="post-count">18.9k</span>
 </nav>
 		<nav class="header-smart-menu">
     		
@@ -163,6 +163,117 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-堆与堆排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/">堆和堆排序</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/" class="archive-article-date">
+  	<time datetime="2020-05-02T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-03</time>
+</a>
+        
+      </header>
+      <div align="center" class="post-count">
+    字数：2.4k字 | 预计阅读时长：11分钟
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="为什么使用堆？"><a href="#为什么使用堆？" class="headerlink" title="为什么使用堆？"></a>为什么使用堆？</h3><p>普通队列:先进先出；后进后出<br>优先队列：出队顺序和入队顺序无关，和优先级有关</p>
+<p>最典型的优先队列的使用就是操作系统的CPU调度，根据进程优先级决定从ready状态进入running状态的进程。<br>我们实际使用优先队列的时候情况是<strong>动态</strong>而复杂的，一个任务处理中心要处理多个任务而且会有新的任务请求进入，如果我们在每次有新的任务到来的时候数组排序，这样的时间成本是巨大的。</p>
+<p>优先队列的主要操作：入队，出队（取出优先级最高的元素）</p>
+<p>我们使用什么数据结构实现优先队列？</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>入队</th>
+<th>出队</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通数组</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>顺序数组</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>堆</td>
+<td>O(lgn)</td>
+<td>O(lgn)</td>
+</tr>
+</tbody></table>
+<p>使用堆的数据结构可以将入队和出队的时间复杂度控制在O(lgn),在处理大量系统数据的时候，堆的性能要好于普通数组与顺序数组。</p>
+        
+          <a class="article-more-a" href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-排序算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -998,6 +1109,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
