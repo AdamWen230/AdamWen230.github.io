@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020/5 | 阿俊的博客</title>
+  <title>最小生成树 | 阿俊的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="The only thing we have to fear is fear itself.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阿俊的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2020/05/index.html">
+  <meta name="description" content="有权图(Weighted Gragh)对于有权图，每一条边上有一个或者一组值(可能是数值，可能是字符串)。我们使用邻接矩阵表示有权图时，很自然的可以把矩阵存储的元素改为权值。对于邻接表，由于有了权的概念，每个结点应该要存储两个信息：1.相邻结点索引 2.相应边的权值因此对于邻接表，我们要把结点的值封装成一个类Edge。为了统一邻接表和邻接矩阵的接口，我们也要把邻接矩阵的元素封装成Edge，在邻接矩">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最小生成树">
+<meta property="og:url" content="http://yoursite.com/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/index.html">
 <meta property="og:site_name" content="阿俊的博客">
-<meta property="og:description" content="The only thing we have to fear is fear itself.">
+<meta property="og:description" content="有权图(Weighted Gragh)对于有权图，每一条边上有一个或者一组值(可能是数值，可能是字符串)。我们使用邻接矩阵表示有权图时，很自然的可以把矩阵存储的元素改为权值。对于邻接表，由于有了权的概念，每个结点应该要存储两个信息：1.相邻结点索引 2.相应边的权值因此对于邻接表，我们要把结点的值封装成一个类Edge。为了统一邻接表和邻接矩阵的接口，我们也要把邻接矩阵的元素封装成Edge，在邻接矩">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-22T04:10:00.000Z">
+<meta property="article:modified_time" content="2020-05-23T07:24:44.748Z">
 <meta property="article:author" content="阿俊">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="阿俊的博客" type="application/atom+xml">
@@ -162,36 +166,67 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-最小生成树" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      最小生成树
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/" class="archive-article-date">
+
+        
+        <a href="/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" class="archive-article-date">
   	<time datetime="2020-05-22T04:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/">图的基础 无权图</a>
-    </h1>
-  
+        
+      </header>
+      <div align="center" class="post-count">
+    字数：1.8k字 | 预计阅读时长：8分钟
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="有权图-Weighted-Gragh"><a href="#有权图-Weighted-Gragh" class="headerlink" title="有权图(Weighted Gragh)"></a>有权图(Weighted Gragh)</h3><p>对于有权图，每一条边上有一个或者一组值(可能是数值，可能是字符串)。<br>我们使用邻接矩阵表示有权图时，很自然的可以把矩阵存储的元素改为权值。<br>对于邻接表，由于有了权的概念，每个结点应该要存储两个信息：1.相邻结点索引 2.相应边的权值<br>因此对于邻接表，我们要把结点的值封装成一个类Edge。<br>为了统一邻接表和邻接矩阵的接口，我们也要把邻接矩阵的元素封装成Edge，在邻接矩阵中没有边的元素应该存为空。<br>因此，我们在邻接表和邻接矩阵中存储的结点值应该是一个指针，这样两者就可以得到统一。</p>
+<p>类Edge的实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 边</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Weight&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Edge</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> a, b;    <span class="comment">// 边的两个端点</span></span><br><span class="line">	Weight weight;  <span class="comment">// 边的权值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 构造函数</span></span><br><span class="line">	Edge(<span class="keyword">int</span> a, <span class="keyword">int</span> b, Weight weight) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;a = a;</span><br><span class="line">		<span class="keyword">this</span>-&gt;b = b;</span><br><span class="line">		<span class="keyword">this</span>-&gt;weight = weight;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 空的构造函数, 所有的成员变量都取默认值</span></span><br><span class="line">	Edge() &#123;&#125;</span><br><span class="line"></span><br><span class="line">	~Edge() &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">v</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> a; &#125; <span class="comment">// 返回第一个顶点</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">w</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> b; &#125; <span class="comment">// 返回第二个顶点</span></span><br><span class="line">	<span class="function">Weight <span class="title">wt</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> weight; &#125;    <span class="comment">// 返回权值</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 给定一个顶点, 返回另一个顶点</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">other</span><span class="params">(<span class="keyword">int</span> x)</span> </span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		assert(x == a || x == b);</span><br><span class="line">		<span class="keyword">return</span> x == a ? b : a;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 输出边的信息</span></span><br><span class="line">	<span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream &amp;os, <span class="keyword">const</span> Edge &amp;e) </span><br><span class="line">	&#123;</span><br><span class="line">		os &lt;&lt; e.a &lt;&lt; <span class="string">"-"</span> &lt;&lt; e.b &lt;&lt; <span class="string">": "</span> &lt;&lt; e.weight;</span><br><span class="line">		<span class="keyword">return</span> os;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 边的大小比较, 是对边的权值的大小比较</span></span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(Edge&lt;Weight&gt;&amp; e)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> weight &lt; e.wt();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&lt;=(Edge&lt;Weight&gt;&amp; e) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> weight &lt;= e.wt();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&gt;(Edge&lt;Weight&gt;&amp; e) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> weight &gt; e.wt();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&gt;=(Edge&lt;Weight&gt;&amp; e)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> weight &gt;= e.wt();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>==(Edge&lt;Weight&gt;&amp; e) &#123;</span><br><span class="line">		<span class="keyword">return</span> weight == e.wt();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>稀疏图类的修改：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 稀疏图 - 邻接表</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Weight&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SparseGraph</span> &#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> n, m;       <span class="comment">// 节点数和边数</span></span><br><span class="line">	<span class="keyword">bool</span> directed;  <span class="comment">// 是否为有向图</span></span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt; &gt; g;   <span class="comment">// 图的具体数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 构造函数</span></span><br><span class="line">	SparseGraph(<span class="keyword">int</span> n, <span class="keyword">bool</span> directed) &#123;</span><br><span class="line">		assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">		<span class="keyword">this</span>-&gt;m = <span class="number">0</span>;    <span class="comment">// 初始化没有任何边</span></span><br><span class="line">		<span class="keyword">this</span>-&gt;directed = directed;</span><br><span class="line">		<span class="comment">// g初始化为n个空的vector, 表示每一个g[i]都为空, 即没有任和边</span></span><br><span class="line">		g = <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt; &gt;(n, <span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt;());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 析构函数</span></span><br><span class="line">	~SparseGraph()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; g[i].<span class="built_in">size</span>(); j++)</span><br><span class="line">				<span class="keyword">delete</span> g[i][j];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">V</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> n; &#125; <span class="comment">// 返回节点个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">E</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m; &#125; <span class="comment">// 返回边的个数</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 向图中添加一个边, 权值为weight</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w, Weight weight)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		assert(v &gt;= <span class="number">0</span> &amp;&amp; v &lt; n);</span><br><span class="line">		assert(w &gt;= <span class="number">0</span> &amp;&amp; w &lt; n);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 注意, 由于在邻接表的情况, 查找是否有重边需要遍历整个链表</span></span><br><span class="line">		<span class="comment">// 我们的程序允许重边的出现</span></span><br><span class="line"></span><br><span class="line">		g[v].push_back(<span class="keyword">new</span> Edge&lt;Weight&gt;(v, w, weight));</span><br><span class="line">		<span class="keyword">if</span> (v != w &amp;&amp; !directed)</span><br><span class="line">			g[w].push_back(<span class="keyword">new</span> Edge&lt;Weight&gt;(w, v, weight));</span><br><span class="line">		m++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 验证图中是否有从v到w的边</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">hasEdge</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span> </span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		assert(v &gt;= <span class="number">0</span> &amp;&amp; v &lt; n);</span><br><span class="line">		assert(w &gt;= <span class="number">0</span> &amp;&amp; w &lt; n);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; g[v].<span class="built_in">size</span>(); i++)</span><br><span class="line">			<span class="keyword">if</span> (g[v][i]-&gt;other(v) == w)</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 显示图的信息</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"vertex "</span> &lt;&lt; i &lt;&lt; <span class="string">":\t"</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; g[i].<span class="built_in">size</span>(); j++)</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"( to:"</span> &lt;&lt; g[i][j]-&gt;w() &lt;&lt; <span class="string">",wt:"</span> &lt;&lt; g[i][j]-&gt;wt() &lt;&lt; <span class="string">")\t"</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 邻边迭代器, 传入一个图和一个顶点,</span></span><br><span class="line">	<span class="comment">// 迭代在这个图中和这个顶点向连的所有边</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">adjIterator</span> </span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		SparseGraph &amp;G; <span class="comment">// 图G的引用</span></span><br><span class="line">		<span class="keyword">int</span> v;</span><br><span class="line">		<span class="keyword">int</span> index;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="comment">// 构造函数</span></span><br><span class="line">		adjIterator(SparseGraph &amp;graph, <span class="keyword">int</span> v) : G(graph) </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">this</span>-&gt;v = v;</span><br><span class="line">			<span class="keyword">this</span>-&gt;index = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		~adjIterator() &#123;&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 返回图G中与顶点v相连接的第一个边</span></span><br><span class="line">		<span class="function">Edge&lt;Weight&gt;* <span class="title">begin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			index = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (G.g[v].<span class="built_in">size</span>())</span><br><span class="line">				<span class="keyword">return</span> G.g[v][index];</span><br><span class="line">			<span class="comment">// 若没有顶点和v相连接, 则返回NULL</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 返回图G中与顶点v相连接的下一个边</span></span><br><span class="line">		<span class="function">Edge&lt;Weight&gt;* <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			index += <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (index &lt; G.g[v].<span class="built_in">size</span>())</span><br><span class="line">				<span class="keyword">return</span> G.g[v][index];</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 查看是否已经迭代完了图G中与顶点v相连接的所有顶点</span></span><br><span class="line">		<span class="function"><span class="keyword">bool</span> <span class="title">end</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> index &gt;= G.g[v].<span class="built_in">size</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>稠密图修改：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 稠密图 - 邻接矩阵</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Weight&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DenseGraph</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> n, m;       <span class="comment">// 节点数和边数</span></span><br><span class="line">	<span class="keyword">bool</span> directed;  <span class="comment">// 是否为有向图</span></span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt;&gt; g;   <span class="comment">// 图的具体数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 构造函数</span></span><br><span class="line">	DenseGraph(<span class="keyword">int</span> n, <span class="keyword">bool</span> directed) </span><br><span class="line">	&#123;</span><br><span class="line">		assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">		<span class="keyword">this</span>-&gt;m = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">this</span>-&gt;directed = directed;</span><br><span class="line">		<span class="comment">// g初始化为n*n的矩阵, 每一个g[i][j]指向一个边的信息, 初始化为NULL</span></span><br><span class="line">		g = <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt;&gt;(n, <span class="built_in">vector</span>&lt;Edge&lt;Weight&gt; *&gt;(n, <span class="literal">NULL</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 析构函数</span></span><br><span class="line">	~DenseGraph() &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">				<span class="keyword">if</span> (g[i][j] != <span class="literal">NULL</span>)</span><br><span class="line">					<span class="keyword">delete</span> g[i][j];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">V</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> n; &#125; <span class="comment">// 返回节点个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">E</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m; &#125; <span class="comment">// 返回边的个数</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 向图中添加一个边, 权值为weight</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w, Weight weight)</span> </span>&#123;</span><br><span class="line">		assert(v &gt;= <span class="number">0</span> &amp;&amp; v &lt; n);</span><br><span class="line">		assert(w &gt;= <span class="number">0</span> &amp;&amp; w &lt; n);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 如果从v到w已经有边, 删除这条边</span></span><br><span class="line">		<span class="keyword">if</span> (hasEdge(v, w)) &#123;</span><br><span class="line">			<span class="keyword">delete</span>  g[v][w];</span><br><span class="line">			<span class="keyword">if</span> (v != w &amp;&amp; !directed)</span><br><span class="line">				<span class="keyword">delete</span> g[w][v];</span><br><span class="line">			m--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		g[v][w] = <span class="keyword">new</span> Edge&lt;Weight&gt;(v, w, weight);</span><br><span class="line">		<span class="keyword">if</span> (v != w &amp;&amp; !directed)</span><br><span class="line">			g[w][v] = <span class="keyword">new</span> Edge&lt;Weight&gt;(w, v, weight);</span><br><span class="line">		m++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 验证图中是否有从v到w的边</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">hasEdge</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span> </span>&#123;</span><br><span class="line">		assert(v &gt;= <span class="number">0</span> &amp;&amp; v &lt; n);</span><br><span class="line">		assert(w &gt;= <span class="number">0</span> &amp;&amp; w &lt; n);</span><br><span class="line">		<span class="keyword">return</span> g[v][w] != <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 显示图的信息</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">				<span class="keyword">if</span> (g[i][j])</span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; g[i][j]-&gt;wt() &lt;&lt; <span class="string">"\t"</span>;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"NULL\t"</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 邻边迭代器, 传入一个图和一个顶点,</span></span><br><span class="line">	<span class="comment">// 迭代在这个图中和这个顶点向连的所有边</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">adjIterator</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		DenseGraph &amp;G;  <span class="comment">// 图G的引用</span></span><br><span class="line">		<span class="keyword">int</span> v;</span><br><span class="line">		<span class="keyword">int</span> index;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="comment">// 构造函数</span></span><br><span class="line">		adjIterator(DenseGraph &amp;graph, <span class="keyword">int</span> v) : G(graph) &#123;</span><br><span class="line">			<span class="keyword">this</span>-&gt;v = v;</span><br><span class="line">			<span class="keyword">this</span>-&gt;index = <span class="number">-1</span>;   <span class="comment">// 索引从-1开始, 因为每次遍历都需要调用一次next()</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		~adjIterator() &#123;&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 返回图G中与顶点v相连接的第一个边</span></span><br><span class="line">		<span class="function">Edge&lt;Weight&gt;* <span class="title">begin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="comment">// 索引从-1开始, 因为每次遍历都需要调用一次next()</span></span><br><span class="line">			index = <span class="number">-1</span>;</span><br><span class="line">			<span class="keyword">return</span> next();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 返回图G中与顶点v相连接的下一个边</span></span><br><span class="line">		<span class="function">Edge&lt;Weight&gt;* <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="comment">// 从当前index开始向后搜索, 直到找到一个g[v][index]为true</span></span><br><span class="line">			<span class="keyword">for</span> (index += <span class="number">1</span>; index &lt; G.V(); index++)</span><br><span class="line">				<span class="keyword">if</span> (G.g[v][index])</span><br><span class="line">					<span class="keyword">return</span> G.g[v][index];</span><br><span class="line">			<span class="comment">// 若没有顶点和v相连接, 则返回NULL</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 查看是否已经迭代完了图G中与顶点v相连接的所有边</span></span><br><span class="line">		<span class="function"><span class="keyword">bool</span> <span class="title">end</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> index &gt;= G.V();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/3.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -207,225 +242,128 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2020-05-22T04:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          图的基础 无权图
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/14/%E5%B9%B6%E6%9F%A5%E9%9B%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">并查集</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">最小生成树</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#有权图-Weighted-Gragh"><span class="toc-number">1.</span> <span class="toc-text">有权图(Weighted Gragh)</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/14/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="archive-article-date">
-  	<time datetime="2020-05-14T02:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-14</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/14/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/06/OS%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9ABounded-Buffer%20Problem/" class="archive-article-date">
-  	<time datetime="2020-05-05T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/06/OS%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9ABounded-Buffer%20Problem/">OS实验二：Bounded-Buffer Problem</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/04/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2020-05-04T00:30:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/04/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E6%A0%91/">二分搜索树</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/" class="archive-article-date">
-  	<time datetime="2020-05-02T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/">堆和堆排序</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -448,8 +386,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

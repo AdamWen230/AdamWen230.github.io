@@ -6,17 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020/5 | 阿俊的博客</title>
+  <title>主成分分析PCA | 阿俊的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="The only thing we have to fear is fear itself.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阿俊的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2020/05/index.html">
+  <meta name="description" content="最近笔试考察到了PCA主成分分析算法，这里做一下总结。 1. 应用主成分分析法：Principle Component Analysis, 是一个非监督的机器学习算法 主要运用于数据的降维，通过降维可以发现便于人类理解的特征 其他作用：可视化，去噪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="主成分分析PCA">
+<meta property="og:url" content="http://yoursite.com/2020/10/03/PCA/index.html">
 <meta property="og:site_name" content="阿俊的博客">
-<meta property="og:description" content="The only thing we have to fear is fear itself.">
+<meta property="og:description" content="最近笔试考察到了PCA主成分分析算法，这里做一下总结。 1. 应用主成分分析法：Principle Component Analysis, 是一个非监督的机器学习算法 主要运用于数据的降维，通过降维可以发现便于人类理解的特征 其他作用：可视化，去噪">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pca1.png">
+<meta property="og:image" content="http://yoursite.com/images/pca2.png">
+<meta property="article:published_time" content="2020-10-03T08:38:26.000Z">
+<meta property="article:modified_time" content="2020-10-03T08:52:05.645Z">
 <meta property="article:author" content="阿俊">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pca1.png">
   
     <link rel="alternative" href="/atom.xml" title="阿俊的博客" type="application/atom+xml">
   
@@ -162,36 +168,124 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-PCA" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      主成分分析PCA
+    </h1>
+  
+
+        
+        <a href="/2020/10/03/PCA/" class="archive-article-date">
+  	<time datetime="2020-10-03T08:38:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-03</time>
+</a>
+        
+      </header>
+      <div align="center" class="post-count">
+    字数：1.6k字 | 预计阅读时长：7分钟
+</div>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近笔试考察到了PCA主成分分析算法，这里做一下总结。</p>
+<h4 id="1-应用"><a href="#1-应用" class="headerlink" title="1. 应用"></a>1. 应用</h4><p>主成分分析法：Principle Component Analysis, 是一个非监督的机器学习算法</p>
+<p>主要运用于数据的降维，通过降维可以发现便于人类理解的特征</p>
+<p>其他作用：可视化，去噪</p>
+<a id="more"></a>
+<h4 id="2-算法描述"><a href="#2-算法描述" class="headerlink" title="2.算法描述"></a>2.算法描述</h4><p>使用方差定义样本间间距，找到让样本间间距最大的轴</p>
+<p>目标：<strong>找到一个轴，使得样本所有的点映射到该轴上后方差最大</strong></p>
+<p>Step1：将样本的均值归为0，称为demean。</p>
+<p>​    Demean处理后，方差的表达式可以化简得到：</p>
+<script type="math/tex; mode=display">
+Var(x)=\frac{1}{m}\sum_{i=1}^{m} x_i^2;</script><script type="math/tex; mode=display">
+\overline{x}=0</script><p>Step2：求某一个轴的方向，w=(w1,w2…..wn),样本X投射到轴上后为Xp，使</p>
+<script type="math/tex; mode=display">
+Var(X_p)=\frac{1}{m}\sum_{i=1}^{m}(X_p^i-\overline{X}_p)^2</script><p>取得最大值，又由于经过Demean处理后样本均值为0，则</p>
+<script type="math/tex; mode=display">
+Var(X_p)=\frac{1}{m}\sum_{i=1}^{m}||X_p^i||^2</script><p>由向量的映射与点乘关系推导出最终的目标表达式为：</p>
+<script type="math/tex; mode=display">
+Var(X_p)=\frac{1}{m}\sum_{i=1}^{m}(X^i\cdot w)^2</script><h4 id="3-使用梯度上升法求解PCA问题"><a href="#3-使用梯度上升法求解PCA问题" class="headerlink" title="3. 使用梯度上升法求解PCA问题"></a>3. 使用梯度上升法求解PCA问题</h4><p>对于该Xp方差的优化问题，我们可以选择使用梯度上升法求解最优w向量。</p>
+<p>X是一个m*n的矩阵，m是样本个数，n是特征数。</p>
+<p>w是n*1的列向量，表示X投射到的轴。</p>
+<p>我们希望得到的梯度是一个n*1的列向量。</p>
+<p>已知：</p>
+<script type="math/tex; mode=display">
+f(X)=\frac{1}{m}\sum_{i=1}^{m}(X^i\cdot w)^2=\frac{1}{m}\sum_{i=1}^{m}(X_1^iw_1+X_2^iw_2+...+X_n^iw_n)^2</script><p>通过求解f(X)的梯度，最终化简得到：</p>
+<script type="math/tex; mode=display">
+f'(X)=\frac{2}{m}X^T(Xw)</script><p>目标函数与梯度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(w,X)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.sum((X.dot(w)**<span class="number">2</span>))/len(X)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">df_math</span><span class="params">(w,X)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> X.T.dot(X.dot(w))*<span class="number">2.</span>/len(X)</span><br></pre></td></tr></table></figure>
+<p>梯度上升法求解主成分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">direction</span><span class="params">(w)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> w/np.linalg.norm(w)</span><br><span class="line"></span><br><span class="line"><span class="comment">#df为传入的梯度求解公式,X是样本矩阵,initial_w是初始化向量，eta是步长,n_iters是最大迭代次数,epsilon是精度</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_ascent</span><span class="params">(df,X,initial_w,eta,n_iters=<span class="number">1e4</span>,epsilon=<span class="number">1e-8</span>)</span>:</span></span><br><span class="line">    w=direction(initial_w)</span><br><span class="line">    cur_iter=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> cur_iter&lt;n_iters:</span><br><span class="line">        gradient=df(w,X)</span><br><span class="line">        last_w=w</span><br><span class="line">        w=w+eta*gradient</span><br><span class="line">        w=direction(w)</span><br><span class="line">        <span class="keyword">if</span>(abs(f(w,X)-f(last_w,X))&lt;epsilon):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        cur_iter+=<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> w</span><br></pre></td></tr></table></figure>
+<h4 id="4-求解数据的前n个主成分"><a href="#4-求解数据的前n个主成分" class="headerlink" title="4.求解数据的前n个主成分"></a>4.求解数据的前n个主成分</h4><p>问题：求出第一个主成分以后，如何求出下一个主成分？</p>
+<p>思路：数据进行改变，将数据在第一个主成分上的分量去掉（即将样本X映射到和Xp垂直的轴上），并在新的数据上求第一主成分。</p>
+<p><img src="/images/pca1.png" alt=""></p>
+<script type="math/tex; mode=display">
+X^i\cdot w=||X^i_{p}||\\
+X^i_p=||X^i_p||\cdot w\\
+X^{'i}=X^i-X^i_p</script><p>将梯度上升法求解主成分的函数名改为first_n_components,即可编写求解数据前n个主成分函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">first_n_components</span><span class="params">(n,X,eta=<span class="number">0.01</span>,n_iters=<span class="number">1e4</span>,epsilon=<span class="number">1e-8</span>)</span>:</span></span><br><span class="line">    X_pca=X.copy()</span><br><span class="line">    X_pca=demean(X_pca)</span><br><span class="line">    res=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        initial_w=np.random.random(X_pca.shape[<span class="number">1</span>])</span><br><span class="line">        w=first_component(X_pca,initial_w,eta)</span><br><span class="line">        res.append(w)</span><br><span class="line">        </span><br><span class="line">        X_pca=X_pca-X_pca.dot(w).reshape(<span class="number">-1</span>,<span class="number">1</span>)*w</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>res列表存储了每一个主成分，对于一个有n维特征的样本而言，最多只有n个主成分。</p>
+<h4 id="5-利用PCA降维"><a href="#5-利用PCA降维" class="headerlink" title="5.利用PCA降维"></a>5.利用PCA降维</h4><p>X是m*n的样本矩阵，m是样本数量，n是特征数。</p>
+<p>W是k*n的某个PCA主成分矩阵，k是主成分数量，n是特征数，其中k&lt;n。</p>
+<p>即：</p>
+<script type="math/tex; mode=display">
+X\cdot W_k^T=X_k</script><p>Xk此时是降维之后的m*k的样本矩阵。</p>
+<p>我们也可以利用此矩阵恢复高维矩阵Xm’，即：</p>
+<script type="math/tex; mode=display">
+X_k\cdot W_k=X'_m</script><p>封装PCA算法与其降维函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PCA</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,n_components)</span>:</span></span><br><span class="line">        <span class="string">"""初始化PCA"""</span></span><br><span class="line">        <span class="keyword">assert</span> n_components&gt;=<span class="number">1</span>,<span class="string">"n_components must be valid"</span></span><br><span class="line">        self.n_components=n_components</span><br><span class="line">        self.components=<span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"PCA(n_components=%d)"</span>%self.n_components</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, eta=<span class="number">0.01</span>, n_iters=<span class="number">1e4</span>)</span>:</span></span><br><span class="line">        <span class="string">"""获得数据集X的前n个主成分"""</span></span><br><span class="line">        <span class="keyword">assert</span> self.n_components &lt;= X.shape[<span class="number">1</span>], \</span><br><span class="line">            <span class="string">"n_components must not be greater than the feature number of X"</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">demean</span><span class="params">(X)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> X - np.mean(X, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(w, X)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> np.sum((X.dot(w) ** <span class="number">2</span>)) / len(X)</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">df</span><span class="params">(w, X)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> X.T.dot(X.dot(w)) * <span class="number">2.</span> / len(X)</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">direction</span><span class="params">(w)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> w / np.linalg.norm(w)</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">first_component</span><span class="params">(X, initial_w, eta=<span class="number">0.01</span>, n_iters=<span class="number">1e4</span>, epsilon=<span class="number">1e-8</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">            w = direction(initial_w)</span><br><span class="line">            cur_iter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> cur_iter &lt; n_iters:</span><br><span class="line">                gradient = df(w, X)</span><br><span class="line">                last_w = w</span><br><span class="line">                w = w + eta * gradient</span><br><span class="line">                w = direction(w)</span><br><span class="line">                <span class="keyword">if</span> (abs(f(w, X) - f(last_w, X)) &lt; epsilon):</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">                cur_iter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> w</span><br><span class="line"></span><br><span class="line">        X_pca = demean(X)</span><br><span class="line">        self.components_ = np.empty(shape=(self.n_components, X.shape[<span class="number">1</span>]))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_components):</span><br><span class="line">            initial_w = np.random.random(X_pca.shape[<span class="number">1</span>])</span><br><span class="line">            w = first_component(X_pca, initial_w, eta, n_iters)</span><br><span class="line">            self.components_[i, :] = w</span><br><span class="line"></span><br><span class="line">            X_pca = X_pca - X_pca.dot(w).reshape(<span class="number">-1</span>, <span class="number">1</span>) * w</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="string">"""将给定的X，映射到各个主成分分量中"""</span></span><br><span class="line">        <span class="keyword">assert</span> X.shape[<span class="number">1</span>] == self.components_.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> X.dot(self.components_.T)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inverse_transform</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="string">"""将给定的X，反向映射回原来的特征空间"""</span></span><br><span class="line">        <span class="keyword">assert</span> X.shape[<span class="number">1</span>] == self.components_.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> X.dot(self.components_)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"PCA(n_components=%d)"</span> % self.n_components</span><br></pre></td></tr></table></figure>
+<p>另外：</p>
+<p>样本数据降维后再恢复，在降维过程中会失去部分信息，无法在restore中恢复为高维信息，restore恢复函数只能在高维空间中表达低维信息。如下图所示，红色点是降维后再恢复的样本，可见其再1维空间中也能表达，restore仅仅是在二维空间中表达该低维矩阵。</p>
+<p><img src="/images/pca2.png" alt=""></p>
+<h4 id="6-利用PCA处理MNIST数据集"><a href="#6-利用PCA处理MNIST数据集" class="headerlink" title="6.利用PCA处理MNIST数据集"></a>6.利用PCA处理MNIST数据集</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> fetch_openml</span><br><span class="line">mnist=fetch_openml(<span class="string">'mnist_784'</span>)</span><br></pre></td></tr></table></figure>
+<p>MNIST数据集是共有70000个样本，每个样本784个特征的数据集合。</p>
+<p>前60000个样本是训练数据集而后10000个样本是测试数据集。</p>
+<p>首先使用KNN算法，不进行降维，测试其性能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn_clf=KNeighborsClassifier()</span><br><span class="line">%time knn_clf.fit(X_train,y_train)</span><br><span class="line">%time knn_clf.score(X_test,y_test)</span><br></pre></td></tr></table></figure>
+<p>实验中，fit过程需要1min9s而score过程需要15min，识别准确率为96.9%</p>
+<p>其次使用PCA，提取能够表达90%方差的主成分，对样本进行降维：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">pca=PCA(<span class="number">0.9</span>)</span><br><span class="line">pca.fit(X_train)</span><br><span class="line">X_train_reduction=pca.transform(X_train)</span><br><span class="line">knn_clf=KNeighborsClassifier()</span><br><span class="line">%time knn_clf.fit(X_train_reduction,y_train)</span><br><span class="line">X_test_reduction=pca.transform(X_test)</span><br><span class="line">%time knn_clf.score(X_test_reduction,y_test)</span><br></pre></td></tr></table></figure>
+<p>降维后只剩下87个维度，与原来的784个维度大大减小。</p>
+<p>PCA降维后，此时fit过程仅需要2.58s，score过程仅需1min38s，识别准确率提升到了97.28%。</p>
+<p>降维后预测率反而提高了，这是因为PCA降维的过程中有降噪的效果。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/3.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/" class="archive-article-date">
-  	<time datetime="2020-05-22T04:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/">图的基础 无权图</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -199,233 +293,123 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/03/PCA/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2020-05-22T04:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/05/22/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80%20%E6%97%A0%E6%9D%83%E5%9B%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">图的基础 无权图</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">最小生成树</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-应用"><span class="toc-number">1.</span> <span class="toc-text">1. 应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-算法描述"><span class="toc-number">2.</span> <span class="toc-text">2.算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-使用梯度上升法求解PCA问题"><span class="toc-number">3.</span> <span class="toc-text">3. 使用梯度上升法求解PCA问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-求解数据的前n个主成分"><span class="toc-number">4.</span> <span class="toc-text">4.求解数据的前n个主成分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-利用PCA降维"><span class="toc-number">5.</span> <span class="toc-text">5.利用PCA降维</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-利用PCA处理MNIST数据集"><span class="toc-number">6.</span> <span class="toc-text">6.利用PCA处理MNIST数据集</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/14/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="archive-article-date">
-  	<time datetime="2020-05-14T02:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-14</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/14/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/06/OS%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9ABounded-Buffer%20Problem/" class="archive-article-date">
-  	<time datetime="2020-05-05T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/06/OS%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9ABounded-Buffer%20Problem/">OS实验二：Bounded-Buffer Problem</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/04/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2020-05-04T00:30:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/04/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E6%A0%91/">二分搜索树</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/" class="archive-article-date">
-  	<time datetime="2020-05-02T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/03/%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/">堆和堆排序</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -448,8 +432,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

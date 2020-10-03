@@ -76,10 +76,10 @@
 			</ul>
 		</nav>
     <nav>
-       总文章数 13
+       总文章数 15
 </nav>
 <nav>
-	总字数 <span class="post-count">27.3k</span>
+	总字数 <span class="post-count">30.6k</span>
 </nav>
 		<nav class="header-smart-menu">
     		
@@ -203,11 +203,9 @@
 <p>3.将新的系统调用函数嵌入到Linux内核中；</p>
 <p>4.编写应用程序以测试新的系统调用并输出测试结果。</p>
 <a id="more"></a>
-
 <h2 id="设计思路与流程图"><a href="#设计思路与流程图" class="headerlink" title="设计思路与流程图"></a>设计思路与流程图</h2><h3 id="解压内核"><a href="#解压内核" class="headerlink" title="解压内核"></a>解压内核</h3><p>打开虚拟机和Fedora 7操作系统，发现桌面上已有linux-2.6.21的压缩文件，进行解压。</p>
 <p>进入桌面终端，执行命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Desktop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar zxvf linux-2.6.21.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> linux-2.6.21</span></span><br></pre></td></tr></table></figure>
-
 <p><img src="/images/os1.png" alt=""></p>
 <p>这是解压后的内核。</p>
 <h3 id="新增系统调用"><a href="#新增系统调用" class="headerlink" title="新增系统调用"></a>新增系统调用</h3><h4 id="1-定义实现函数"><a href="#1-定义实现函数" class="headerlink" title="1.定义实现函数"></a>1.定义实现函数</h4><p>进入<strong>\linux-2.6.21\kernel\sys.c</strong>，在文件末尾新增一个系统调用函数：</p>
@@ -220,21 +218,14 @@
 <p><img src="/images/os4.png" alt=""></p>
 <p>（注意要把最后的NR_syscalls表示总系统调用数量的宏定义值改为321）</p>
 <h3 id="重新编译内核"><a href="#重新编译内核" class="headerlink" title="重新编译内核"></a>重新编译内核</h3><h4 id="1-生成内核配置文件"><a href="#1-生成内核配置文件" class="headerlink" title="1.生成内核配置文件"></a>1.生成内核配置文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make mrproper</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp /boot/config-`uname –r` ./config</span></span><br></pre></td></tr></table></figure>
-
 <p>第一个命令make mrproper用来保证内核树是干净的，如果内核第一次编译则可以省略。其中的uname –r命令可查看当前环境下的内核版本号。</p>
 <h4 id="2-更新config文件"><a href="#2-更新config文件" class="headerlink" title="2.更新config文件"></a>2.更新config文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make oldconfig</span></span><br></pre></td></tr></table></figure>
-
 <p>部分新配置项会提示用户选择，都选N或者缺省即可，完成后即可生成.config文件。</p>
 <p>在编译内核前，可以定义自己的内核版本号，在内核代码的根目录下有Makefile文件，例如将第4行改为：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXTRAVERSION = -seu</span><br></pre></td></tr></table></figure>
-
 <p>这样新内核版本号就是2.6.21-seu</p>
 <h4 id="3-编译安装内核"><a href="#3-编译安装内核" class="headerlink" title="3.编译安装内核"></a>3.编译安装内核</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make all</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> make modules_install</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install</span></span><br></pre></td></tr></table></figure>
-
-
-
 <h4 id="4-重启系统"><a href="#4-重启系统" class="headerlink" title="4.重启系统"></a>4.重启系统</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> reboot</span></span><br></pre></td></tr></table></figure>
-
 <p>重启系统后，会出现两个内核，其中第一个就是我们刚刚安装的内核：</p>
 <p><img src="/images/os5.png" alt=""></p>
 <p>选择该内核并且打开。</p>
@@ -687,5 +678,20 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
