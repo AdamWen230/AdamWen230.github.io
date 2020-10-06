@@ -8,30 +8,30 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>OS实验三：Linux进程管理及其拓展 | 阿俊的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="实验目的通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。 实验内容 阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构；  实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下： （1）实现系统调用int hide(pid_t pid, int on)，在进程pid有效的前提下，如果on置1，进程被隐藏，">
+  <meta name="description" content="实验目的通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。 实验内容阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构； 实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下： （1）实现系统调用int hide(pid_t pid, int on)，在进程pid有效的前提下，如果on置1，进程被隐藏，用户">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS实验三：Linux进程管理及其拓展">
 <meta property="og:url" content="http://yoursite.com/2020/10/06/OS%E5%AE%9E%E9%AA%8C%E4%B8%89%EF%BC%9ALinux%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%8F%8A%E5%85%B6%E6%8B%93%E5%B1%95/index.html">
 <meta property="og:site_name" content="阿俊的博客">
-<meta property="og:description" content="实验目的通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。 实验内容 阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构；  实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下： （1）实现系统调用int hide(pid_t pid, int on)，在进程pid有效的前提下，如果on置1，进程被隐藏，">
+<meta property="og:description" content="实验目的通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。 实验内容阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构； 实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下： （1）实现系统调用int hide(pid_t pid, int on)，在进程pid有效的前提下，如果on置1，进程被隐藏，用户">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C8.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C9.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C10.png">
-<meta property="og:image" content="c:/学习/大三上/操作系统课程设计/实验截图/1.png">
-<meta property="og:image" content="c:/学习/大三上/操作系统课程设计/实验截图/2.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C3.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C4.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C5.png">
-<meta property="og:image" content="c:%5CUsers%5C76171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201006174406208.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C6.png">
-<meta property="og:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C7.png">
+<meta property="og:image" content="http://yoursite.com/images/l8.png">
+<meta property="og:image" content="http://yoursite.com/images/l9.png">
+<meta property="og:image" content="http://yoursite.com/images/l10.png">
+<meta property="og:image" content="http://yoursite.com/images/l1.png">
+<meta property="og:image" content="http://yoursite.com/images/l2.png">
+<meta property="og:image" content="http://yoursite.com/images/l3.png">
+<meta property="og:image" content="http://yoursite.com/images/l4.png">
+<meta property="og:image" content="http://yoursite.com/images/l5.png">
+<meta property="og:image" content="http://yoursite.com/images/l12.png">
+<meta property="og:image" content="http://yoursite.com/images/l6.png">
+<meta property="og:image" content="http://yoursite.com/images/l7.png">
 <meta property="article:published_time" content="2020-10-06T12:02:22.000Z">
-<meta property="article:modified_time" content="2020-10-06T12:04:28.149Z">
+<meta property="article:modified_time" content="2020-10-06T12:25:57.551Z">
 <meta property="article:author" content="阿俊">
 <meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C8.png">
+<meta name="twitter:image" content="http://yoursite.com/images/l8.png">
   
     <link rel="alternative" href="/atom.xml" title="阿俊的博客" type="application/atom+xml">
   
@@ -201,47 +201,31 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h3><p>通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。</p>
-<h3 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h3><ol>
-<li><p>阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构；</p>
-</li>
-<li><p>实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下：</p>
+<h3 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h3><p>阅读并分析Linux内核源代码，了解进程控制块、进程队列等数据结构；</p>
+<p>实现一个系统调用，使得可以根据指定的参数隐藏进程，使用户无法使用ps或top观察到进程状态。具体要求如下：</p>
 <p>（1）实现系统调用int hide(pid_t pid, int on)，在进程pid有效的前提下，如果on置1，进程被隐藏，用户无法通过ps或top观察到进程状态；如果on置0且此前为隐藏状态，则恢复正常状态。</p>
 <p>（2）考虑权限问题，只有根用户才能隐藏进程。</p>
 <p>（3）设计一个新的系统调用int hide_user_processes(uid_t uid, char *binname)，参数uid为用户ID号，当binname参数为NULL时，隐藏该用户的所有进程；否则，隐藏二进制映像名为binname的用户进程。该系统调用应与hide系统调用共存。</p>
 <p>（4）在/proc目录下创建一个文件/proc/hidden，该文件可读可写，对应一个全局变量hidden_flag，当hidden_flag为0时，所有进程都无法隐藏，即便此前进程被hide系统调用要求隐藏。只有当hidden_flag为1时，此前通过hide调用要求被屏蔽的进程才隐藏起来。</p>
 <p>（5）在/proc目录下创建一个文件/proc/hidden_process，该文件的内容包含所有被隐藏进程的pid，各pid之间用空格分开。</p>
-</li>
-</ol>
-<h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><h4 id="一、hide系统调用的设计（对应实验内容1，2）"><a href="#一、hide系统调用的设计（对应实验内容1，2）" class="headerlink" title="一、hide系统调用的设计（对应实验内容1，2）"></a>一、hide系统调用的设计（对应实验内容1，2）</h4><p><img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C8.png" alt="8"></p>
-<h4 id="二、hide-user-process系统调用的设计（对应实验内容3）"><a href="#二、hide-user-process系统调用的设计（对应实验内容3）" class="headerlink" title="二、hide_user_process系统调用的设计（对应实验内容3）"></a>二、hide_user_process系统调用的设计（对应实验内容3）</h4><p><img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C9.png" alt="9"></p>
-<h4 id="三、hidden与hidden-process的设计（对应实验内容4，5）"><a href="#三、hidden与hidden-process的设计（对应实验内容4，5）" class="headerlink" title="三、hidden与hidden_process的设计（对应实验内容4，5）"></a>三、hidden与hidden_process的设计（对应实验内容4，5）</h4><p><img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C10.png" alt="10"></p>
-<h3 id="实验过程与功能测试"><a href="#实验过程与功能测试" class="headerlink" title="实验过程与功能测试"></a>实验过程与功能测试</h3><h4 id="一、新增系统调用hide，仅根用户能隐藏进程"><a href="#一、新增系统调用hide，仅根用户能隐藏进程" class="headerlink" title="一、新增系统调用hide，仅根用户能隐藏进程"></a>一、新增系统调用hide，仅根用户能隐藏进程</h4><ol>
-<li><p>在include/linux/sched.h中修改表示进程状态的结构体task_struct，为该结构体增加一个成员变量cloak。</p>
+<a id="more"></a>
+
+
+
+<h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><h4 id="一、hide系统调用的设计（对应实验内容1，2）"><a href="#一、hide系统调用的设计（对应实验内容1，2）" class="headerlink" title="一、hide系统调用的设计（对应实验内容1，2）"></a>一、hide系统调用的设计（对应实验内容1，2）</h4><p><img src="/images/l8.png" alt=""></p>
+<h4 id="二、hide-user-process系统调用的设计（对应实验内容3）"><a href="#二、hide-user-process系统调用的设计（对应实验内容3）" class="headerlink" title="二、hide_user_process系统调用的设计（对应实验内容3）"></a>二、hide_user_process系统调用的设计（对应实验内容3）</h4><p><img src="/images/l9.png" alt=""></p>
+<h4 id="三、hidden与hidden-process的设计（对应实验内容4，5）"><a href="#三、hidden与hidden-process的设计（对应实验内容4，5）" class="headerlink" title="三、hidden与hidden_process的设计（对应实验内容4，5）"></a>三、hidden与hidden_process的设计（对应实验内容4，5）</h4><p><img src="/images/l10.png" alt=""></p>
+<h3 id="实验过程与功能测试"><a href="#实验过程与功能测试" class="headerlink" title="实验过程与功能测试"></a>实验过程与功能测试</h3><h4 id="一、新增系统调用hide，仅根用户能隐藏进程"><a href="#一、新增系统调用hide，仅根用户能隐藏进程" class="headerlink" title="一、新增系统调用hide，仅根用户能隐藏进程"></a>一、新增系统调用hide，仅根用户能隐藏进程</h4><p>在include/linux/sched.h中修改表示进程状态的结构体task_struct，为该结构体增加一个成员变量cloak。</p>
 <p>cloak=0表示进程被显示，clock=0表示进程被隐藏。</p>
-<img src="C:\学习\大三上\操作系统课程设计\实验截图\1.png" alt="1"  />
-
-
-
-</li>
-</ol>
-<ol start="2">
-<li><p>使进程被创建时处于被显示状态，cloak成员初始化为0。kernel/fork.c文件中的do_fork中的copy_process函数功能为创建子进程，因此我们在该函数中初始化cloak标志位，使其为0。</p>
-<img src="C:\学习\大三上\操作系统课程设计\实验截图\2.png" alt="1" style="zoom:50%;" />
-
-
-
-</li>
-</ol>
-<ol start="3">
-<li><p>在kernel目录下新建系统调用实现文件hide.c，实现系统调用函数sys_hide。源代码如下：</p>
+<p><img src="/images/l1.png" alt=""></p>
+<p>使进程被创建时处于被显示状态，cloak成员初始化为0。kernel/fork.c文件中的do_fork中的copy_process函数功能为创建子进程，因此我们在该函数中初始化cloak标志位，使其为0。</p>
+<p><img src="/images/l2.png" alt=""></p>
+<p>在kernel目录下新建系统调用实现文件hide.c，实现系统调用函数sys_hide。源代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/linkage.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/pid.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/proc_fs.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">asmlinkage <span class="keyword">int</span> <span class="title">sys_hide</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> on)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">p</span>=<span class="title">NULL</span>;</span></span><br><span class="line">    <span class="comment">//判断用户是否为根用户</span></span><br><span class="line">	<span class="keyword">if</span>(pid&gt;<span class="number">0</span> &amp;&amp; (current -&gt; uid)==<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		p=find_task_by_pid(pid);<span class="comment">//获取进程句柄</span></span><br><span class="line">		p-&gt;cloak=on;<span class="comment">//设置cloak标志位</span></span><br><span class="line">		<span class="keyword">if</span>(on==<span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			printk(<span class="string">"Process %d is hidden by root.\n"</span>,pid);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(on==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			printk(<span class="string">"Process %d is displayed by root.\n"</span>,pid);</span><br><span class="line">		&#125;</span><br><span class="line">		proc_flush_task(p);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		printk(<span class="string">"Sorry,you have no root Permission .\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>说明：第10行获取当前用户ID并进行判断，根用户ID=0，允许执行隐藏操作，将标志位cloak设置为1，打印相关信息；普通用户ID不等于0，无权限进行隐藏，并打印相关信息。</p>
-</li>
-</ol>
-<ol start="4">
-<li><p>fs/proc/base.c中的proc_pid_readdir函数与proc_pid_lookup函数用于显示进程状态，在显示进程前，应该通过判断标志位，过滤掉被隐藏的进程，使得用户无法通过ps或者aux命令观察到进程状态。</p>
-<p> proc_pid_lookup中新增判断语句：</p>
+<p>fs/proc/base.c中的proc_pid_readdir函数与proc_pid_lookup函数用于显示进程状态，在显示进程前，应该通过判断标志位，过滤掉被隐藏的进程，使得用户无法通过ps或者aux命令观察到进程状态。</p>
+<p>proc_pid_lookup中新增判断语句：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hidden_flag==<span class="number">1</span>&amp;&amp;task-&gt;cloak==<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">goto</span> out;</span><br></pre></td></tr></table></figure>
 
 <p>proc_pid_readdir中新增判断条件：</p>
@@ -249,80 +233,52 @@
 
 
 
-</li>
-</ol>
-<ol start="5">
-<li>在增加hide系统调用的宏定义，增加系统调用声明，重新编译内核，进入新内核进行测试。</li>
-</ol>
-<ol start="6">
-<li><p>编写测试程序如下:</p>
+<p>在增加hide系统调用的宏定义，增加系统调用声明，重新编译内核，进入新内核进行测试。</p>
+<p>编写测试程序如下:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> syscallNum=<span class="number">321</span>;<span class="comment">//321是hide的系统调用号</span></span><br><span class="line">    <span class="keyword">int</span> pidint;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">int</span> on;</span><br><span class="line">    <span class="comment">//用户输入要操作的进程pid</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Input the pid you want to operate\n"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;pidint);</span><br><span class="line">    <span class="comment">//输入1，隐藏进程；输入0，恢复进程</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hide the process,input 1,else input 0\n"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;on);</span><br><span class="line">    pid=pidint;	</span><br><span class="line">    syscall(syscallNum,pid,on);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<p>   在<strong>普通用户状态</strong>下，隐藏1号进程，使用dmesg命令查看内核日志发现隐藏失败。</p>
-<p>   <img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C3.png" alt="3"></p>
-<p>   在<strong>root用户状态</strong>下，隐藏1号进程，通过ps aux命令查看到进程隐藏成功！</p>
-<p>   <img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C4.png" alt="3"></p>
-<h4 id="二、设计一个新的系统调用hide-user-processes"><a href="#二、设计一个新的系统调用hide-user-processes" class="headerlink" title="二、设计一个新的系统调用hide_user_processes"></a>二、设计一个新的系统调用hide_user_processes</h4><ol>
-<li><p>在kernel目录下新增hide_user_process.c文件，实现能够隐藏用户所有进程的系统调用。</p>
+<p>在<strong>普通用户状态</strong>下，隐藏1号进程，使用dmesg命令查看内核日志发现隐藏失败。</p>
+<p><img src="/images/l3.png" alt=""></p>
+<p>在<strong>root用户状态</strong>下，隐藏1号进程，通过ps aux命令查看到进程隐藏成功！</p>
+<p><img src="/images/l4.png" alt=""></p>
+<h4 id="二、设计一个新的系统调用hide-user-processes"><a href="#二、设计一个新的系统调用hide-user-processes" class="headerlink" title="二、设计一个新的系统调用hide_user_processes"></a>二、设计一个新的系统调用hide_user_processes</h4><p>在kernel目录下新增hide_user_process.c文件，实现能够隐藏用户所有进程的系统调用。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/linkage.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/pid.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/proc_fs.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/string.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function">asmlinkage <span class="keyword">int</span> <span class="title">sys_hide_user_processes</span><span class="params">(<span class="keyword">uid_t</span> uid,<span class="keyword">char</span> *binname,<span class="keyword">int</span> recover)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">p</span>=<span class="title">NULL</span>;</span></span><br><span class="line">    <span class="keyword">if</span>(recover==<span class="number">0</span>)<span class="comment">//recover为恢复参数，recover=0表示隐藏，recover=1表示恢复所有进程</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(current-&gt;uid==<span class="number">0</span>)<span class="comment">//仅根用户可执行隐藏操作</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(binname==<span class="literal">NULL</span>)<span class="comment">//参数binname为空，则隐藏用户所有进程</span></span><br><span class="line">            &#123;</span><br><span class="line">                for_each_process(p)<span class="comment">//匹配用户进程</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span>((p-&gt;uid)==uid)</span><br><span class="line">                    &#123;</span><br><span class="line">                        p-&gt;cloak=<span class="number">1</span>;</span><br><span class="line">                        proc_flush_task(p);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                printk(<span class="string">"All of the processes of uid %d are hidden.\n"</span>,uid);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span><span class="comment">//隐藏用户二进制镜像名等于参数输入的进程</span></span><br><span class="line">            &#123;</span><br><span class="line">                for_each_process(p)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">char</span> *s=p-&gt;comm;</span><br><span class="line">                    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(s,binname)==<span class="number">0</span> &amp;&amp; p-&gt;uid==uid)</span><br><span class="line">                    &#123;</span><br><span class="line">                        p-&gt;cloak=<span class="number">1</span>;</span><br><span class="line">                        printk(<span class="string">"Process %s of uid %d is hidden.\n"</span>,binname,uid);</span><br><span class="line">                        proc_flush_task(p);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            printk(<span class="string">"Sorry, you are not root user. Permission denied.\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(recover != <span class="number">0</span> &amp;&amp; (current-&gt;uid)==<span class="number">0</span>)<span class="comment">//恢复所有进程</span></span><br><span class="line">    &#123;</span><br><span class="line">        for_each_process(p)</span><br><span class="line">        &#123;</span><br><span class="line">            p-&gt;cloak=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<ol start="2">
-<li><p>新增系统调用号，声明系统调用，编译内核，进入新内核并编写测试程序进行测试。测试程序代码如下：</p>
+<p>新增系统调用号，声明系统调用，编译内核，进入新内核并编写测试程序进行测试。测试程序代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> syscallNum=<span class="number">323</span>;</span><br><span class="line">    <span class="keyword">int</span> userid;</span><br><span class="line">    <span class="comment">//输入要隐藏所有进程的用户ID</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Input the uid you want to operate\n"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;userid);</span><br><span class="line">    <span class="keyword">uid_t</span> uid=userid;</span><br><span class="line">    <span class="keyword">char</span> *binname=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">int</span> recover;</span><br><span class="line">    <span class="comment">//设置对用户ID下所有进程的操作，1为恢复，0为隐藏</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Recover all,input 1;Hide,input 0\n"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;recover); </span><br><span class="line">    syscall(<span class="number">322</span>,uid,binname,recover);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<ol start="3">
-<li><p>进行测试，隐藏用户名为seu，uid=500的所有进程。</p>
+<p>进行测试，隐藏用户名为seu，uid=500的所有进程。</p>
 <p>隐藏前：ps aux命令执行后可看到seu的进程</p>
-<p><img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C5.png" alt="5"></p>
-</li>
-</ol>
-<pre><code>隐藏后：通过ps aux命令不能观察到seu的进程</code></pre><p><img src="C:%5CUsers%5C76171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201006174406208.png" alt="image-20201006174406208"></p>
-<h4 id="三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden-proccess文件，显示被隐藏的进程名"><a href="#三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden-proccess文件，显示被隐藏的进程名" class="headerlink" title="三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden_proccess文件，显示被隐藏的进程名"></a>三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden_proccess文件，显示被隐藏的进程名</h4><ol>
-<li><p>在fs/proc目录下新建var.h头文件，申明全局变量hidden_flag。</p>
+<p><img src="/images/l5.png" alt=""></p>
+<p>​       隐藏后：ps aux命令看不到seu的进程</p>
+<p><img src="/images/l12.png" alt=""></p>
+<h4 id="三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden-proccess文件，显示被隐藏的进程名"><a href="#三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden-proccess文件，显示被隐藏的进程名" class="headerlink" title="三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden_proccess文件，显示被隐藏的进程名"></a>三、创建hidden文件，对其读写实现隐藏权限控制。创建hidden_proccess文件，显示被隐藏的进程名</h4><p>在fs/proc目录下新建var.h头文件，申明全局变量hidden_flag。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> hidden_flag;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<ol start="2">
-<li>将对全局变量hidden_flag的判断加入fs/proc/base.c的proc_pid_readdir与proc_pid_lookup条件判断语句中，控制进程的显示。</li>
-</ol>
-<ol start="3">
-<li><p>在/proc/proc_misc.c中添加proc_read_hidden与proc_write_hidden函数，将用户对hidden_flag的读写传入内核，实现权限控制。</p>
+<p>将对全局变量hidden_flag的判断加入fs/proc/base.c的proc_pid_readdir与proc_pid_lookup条件判断语句中，控制进程的显示。</p>
+<p>在/proc/proc_misc.c中添加proc_read_hidden与proc_write_hidden函数，将用户对hidden_flag的读写传入内核，实现权限控制。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> hidden_flag=<span class="number">1</span>;<span class="comment">//初始化为1，首先允许隐藏</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//允许用户读取hidden_flag的数据，将隐藏进程信息写入文件</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">proc_read_hidden</span><span class="params">(<span class="keyword">char</span> *page,<span class="keyword">char</span> **start,<span class="keyword">off_t</span> off,<span class="keyword">int</span> count,<span class="keyword">int</span> *eof,<span class="keyword">void</span> *data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len=<span class="number">0</span>;</span><br><span class="line">    len=<span class="built_in">sprintf</span>(page,<span class="string">"%d"</span>,hidden_flag);</span><br><span class="line">    <span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//允许用户写入数据到hidden文件，并将写入数据赋值给hidden_flag</span></span><br><span class="line"><span class="keyword">int</span> BUF_LEN=<span class="number">128</span>;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">proc_write_hidden</span><span class="params">(struct file *file,<span class="keyword">const</span> <span class="keyword">char</span> *<span class="built_in">buffer</span>,<span class="keyword">unsigned</span> <span class="keyword">long</span> count,<span class="keyword">void</span> *data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> temp[BUF_LEN];</span><br><span class="line">    <span class="keyword">if</span>(count &gt; BUF_LEN)</span><br><span class="line">            len = BUF_LEN;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            len = count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对用户写入进行转换</span></span><br><span class="line">    copy_from_user(temp, <span class="built_in">buffer</span>, len);</span><br><span class="line">    temp[len]=<span class="string">'\0'</span>;</span><br><span class="line">    <span class="comment">//设置hidden_flag值</span></span><br><span class="line">    hidden_flag=temp[<span class="number">0</span>]-<span class="string">'0'</span>;</span><br><span class="line">    <span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<ol start="4">
-<li><p>在proc_misc_init函数中添加回调函数，添加创建hidden和hidden_process文件的代码，并指定回调函数:</p>
+<p>在proc_misc_init函数中添加回调函数，添加创建hidden和hidden_process文件的代码，并指定回调函数:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在proc目录下创建hidden与hidden_process文件</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc_dir_entry</span> *<span class="title">ptr</span>=<span class="title">create_proc_entry</span>("<span class="title">hidden</span>",0644,<span class="title">NULL</span>);</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc_dir_entry</span> *<span class="title">myptr</span>=<span class="title">create_proc_entry</span>("<span class="title">hidden_process</span>",0644,<span class="title">NULL</span>);</span></span><br><span class="line"><span class="comment">//指定回调函数</span></span><br><span class="line">ptr-&gt;read_proc=proc_read_hidden;</span><br><span class="line">ptr-&gt;write_proc=proc_write_hidden;</span><br><span class="line">myptr-&gt;read_proc=proc_read_hidden_processes;</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ol>
-<ol start="5">
-<li>重新编译内核，进行功能测试。</li>
-</ol>
+<p>重新编译内核，进行功能测试。</p>
 <p>   在hidden_flag=1的情形下，隐藏seu的所有进程，查看hidden_process文件,可以看到所有被隐藏进程的pid号。</p>
-<p>   <img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C6.png" alt="6"></p>
+<p>   <img src="/images/l6.png" alt=""></p>
 <p>   将hidden_flag设置为0，使用ps aux查看进程，发现seu的进程被显示了。</p>
-<p>   <img src="C:%5C%E5%AD%A6%E4%B9%A0%5C%E5%A4%A7%E4%B8%89%E4%B8%8A%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%5C%E5%AE%9E%E9%AA%8C%E6%88%AA%E5%9B%BE%5C7.png" alt="7"></p>
+<p>   <img src="/images/l7.png" alt=""></p>
 <h3 id="实验心得体会"><a href="#实验心得体会" class="headerlink" title="实验心得体会"></a>实验心得体会</h3><p>本次实验我对linux的进程控制，进程管理与系统调用有了更加深刻的了解，特别是对于进程的创建过程，进程结构体内成员变量，进程控制块与一些常用命令有了更加熟练的掌握。</p>
 <p>两次新增系统调用让我巩固了第一次实验新增系统调用的流程，同时对于编译内核过程中出现的错误信息，我也能够耐心排查解决问题。</p>
 <p>对于hidden与hidden_process的控制操作，涉及C++的文件读写，回调函数，指针等等知识，这一块我比较陌生，此次实验通过参考学长学姐与同学的实验然后自己实现让我巩固了这部分知识，并对linux内核有了进一步的掌握。</p>
